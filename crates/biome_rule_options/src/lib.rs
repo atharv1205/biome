@@ -212,6 +212,7 @@ pub mod no_playwright_force_option;
 pub mod no_playwright_missing_await;
 pub mod no_playwright_networkidle;
 pub mod no_playwright_page_pause;
+pub mod no_playwright_unsafe_references;
 pub mod no_playwright_useless_await;
 pub mod no_playwright_wait_for_navigation;
 pub mod no_playwright_wait_for_selector;
