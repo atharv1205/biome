@@ -3551,6 +3551,11 @@ export interface Nursery {
 	 * See https://biomejs.dev/linter/rules/use-vue-matching-component-file-name
 	 */
 	useVueMatchingComponentFileName?: UseVueMatchingComponentFileNameConfiguration;
+	/**
+	 * Require the condition that ends a loop to be written in the while statement.
+	 * See https://biomejs.dev/linter/rules/use-while-loop-condition
+	 */
+	useWhileLoopCondition?: UseWhileLoopConditionConfiguration;
 }
 /**
  * Configures all rules in one lint group.
@@ -6060,6 +6065,9 @@ export type UseVueConsistentEventHyphenationConfiguration =
 export type UseVueMatchingComponentFileNameConfiguration =
 	| RulePlainConfiguration
 	| RuleWithUseVueMatchingComponentFileNameOptions;
+export type UseWhileLoopConditionConfiguration =
+	| RulePlainConfiguration
+	| RuleWithUseWhileLoopConditionOptions;
 export type NoAccumulatingSpreadConfiguration =
 	| RulePlainConfiguration
 	| RuleWithNoAccumulatingSpreadOptions;
@@ -8788,6 +8796,14 @@ export interface RuleWithUseVueMatchingComponentFileNameOptions {
 	level: RulePlainConfiguration;
 	options?: UseVueMatchingComponentFileNameOptions;
 }
+export interface RuleWithUseWhileLoopConditionOptions {
+	/**
+	 * Controls the applicability of the rule's fix. `none` suppresses the fix, while `safe` and `unsafe` reclassify its applicability. This setting does not change the fix itself.
+	 */
+	fix?: FixKind;
+	level: RulePlainConfiguration;
+	options?: UseWhileLoopConditionOptions;
+}
 export interface RuleWithNoAccumulatingSpreadOptions {
 	level: RulePlainConfiguration;
 	options?: NoAccumulatingSpreadOptions;
@@ -11112,6 +11128,7 @@ export interface UseVueConsistentEventHyphenationOptions {
 	ignoreTags?: string[];
 }
 export type UseVueMatchingComponentFileNameOptions = {};
+export type UseWhileLoopConditionOptions = {};
 export type NoAccumulatingSpreadOptions = {};
 export type NoAwaitInLoopsOptions = {};
 export type NoBarrelFileOptions = {};
@@ -12516,13 +12533,13 @@ export type Category =
 	| "lint/nursery/noBaseToString"
 	| "lint/nursery/noBunModules"
 	| "lint/nursery/noColorInvalidHex"
-	| "lint/nursery/noDuplicateMapKeys"
 	| "lint/nursery/noComponentHookFactories"
 	| "lint/nursery/noConditionalExpect"
 	| "lint/nursery/noDoubleComparison"
 	| "lint/nursery/noDrizzleDeleteWithoutWhere"
 	| "lint/nursery/noDrizzleUpdateWithoutWhere"
 	| "lint/nursery/noDuplicateFieldDefinitionNames"
+	| "lint/nursery/noDuplicateMapKeys"
 	| "lint/nursery/noDuplicateSelectors"
 	| "lint/nursery/noEmptyObjectKeys"
 	| "lint/nursery/noExcessiveNestedCallbacks"
@@ -12560,8 +12577,8 @@ export type Category =
 	| "lint/nursery/noPlaywrightWaitForNavigation"
 	| "lint/nursery/noPlaywrightWaitForSelector"
 	| "lint/nursery/noPlaywrightWaitForTimeout"
-	| "lint/nursery/noPromiseExecutorReturn"
 	| "lint/nursery/noProcessExit"
+	| "lint/nursery/noPromiseExecutorReturn"
 	| "lint/nursery/noReactNativeDeepImports"
 	| "lint/nursery/noReactNativeLiteralColors"
 	| "lint/nursery/noReactNativeRawText"
@@ -12600,11 +12617,11 @@ export type Category =
 	| "lint/nursery/noUselessTypeConversion"
 	| "lint/nursery/noVueBooleanDefault"
 	| "lint/nursery/noVueDeprecatedScopedSlots"
-	| "lint/nursery/noVueLifecycleAfterAwait"
-	| "lint/nursery/noVueRootVIf"
 	| "lint/nursery/noVueImportCompilerMacros"
+	| "lint/nursery/noVueLifecycleAfterAwait"
 	| "lint/nursery/noVueRefAsOperand"
 	| "lint/nursery/noVueRequiredPropWithDefault"
+	| "lint/nursery/noVueRootVIf"
 	| "lint/nursery/noVueShadowNativeEvents"
 	| "lint/nursery/noVueUndeclaredDirectives"
 	| "lint/nursery/noVueVHtml"
@@ -12664,8 +12681,8 @@ export type Category =
 	| "lint/nursery/useSvelteRequireEachKey"
 	| "lint/nursery/useSvelteShorthandDirective"
 	| "lint/nursery/useTailwindShorthandClasses"
-	| "lint/nursery/useTailwindStaticClassStrings"
 	| "lint/nursery/useTailwindSortedClasses"
+	| "lint/nursery/useTailwindStaticClassStrings"
 	| "lint/nursery/useTopLevelHeading"
 	| "lint/nursery/useUnaryMinus"
 	| "lint/nursery/useUniqueArgumentNames"
@@ -12681,6 +12698,7 @@ export type Category =
 	| "lint/nursery/useVueNextTickPromise"
 	| "lint/nursery/useVueValidVFor"
 	| "lint/nursery/useVueValidVModel"
+	| "lint/nursery/useWhileLoopCondition"
 	| "lint/performance/noAccumulatingSpread"
 	| "lint/performance/noAwaitInLoops"
 	| "lint/performance/noBarrelFile"

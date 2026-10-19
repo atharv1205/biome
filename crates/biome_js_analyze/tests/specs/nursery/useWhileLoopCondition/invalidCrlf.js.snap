@@ -1,0 +1,51 @@
+---
+source: crates/biome_js_analyze/tests/spec_tests.rs
+expression: invalidCrlf.js
+---
+# Input
+```js
+/* should generate diagnostics */
+do {
+  if (done) {
+    break;
+  }
+  processNext(/* Keep this argument comment. */ value);
+} while (true);
+
+```
+
+# Diagnostics
+```
+invalidCrlf.js:3:3 lint/nursery/useWhileLoopCondition  FIXABLE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  i The condition that ends this loop is checked by an if statement at the start of its body.
+  
+    1 │ /* should generate diagnostics */
+    2 │ do {
+  > 3 │   if (done) {
+      │   ^^^^^^^^^^^
+  > 4 │     break;
+  > 5 │   }
+      │   ^
+    6 │   processNext(/* Keep this argument comment. */ value);
+    7 │ } while (true);
+  
+  i Writing the condition in the while statement shows when the loop stops without reading its body.
+  
+  i This rule belongs to the nursery group, which means it is not yet stable and may change in the future. Visit https://biomejs.dev/linter/#nursery for more information.
+  
+  i Safe fix: Move the condition into the while statement.
+  
+    1 1 │   /* should generate diagnostics */␍
+    2   │ - do·{␍
+    3   │ - ··if·(done)·{␍
+    4   │ - ····break;␍
+    5   │ - ··}␍
+      2 │ + while·(!done)·{␍
+    6 3 │     processNext(/* Keep this argument comment. */ value);␍
+    7   │ - }·while·(true);␍
+      4 │ + }␍
+    8 5 │   
+  
+
+```
