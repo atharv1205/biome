@@ -101,7 +101,7 @@ declare_lint_rule! {
     /// ```
     ///
     pub NoShortTimeValues {
-        version: "next",
+        version: "2.6.3",
         name: "noShortTimeValues",
         language: "css",
         recommended: false,

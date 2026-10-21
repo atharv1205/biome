@@ -1,5 +1,115 @@
 # @biomejs/biome
 
+## 2.6.3
+
+### Patch Changes
+
+- [#12304](https://github.com/biomejs/biome/pull/12304) [`b4654c5`](https://github.com/biomejs/biome/commit/b4654c569884c169fa1ab4c4cef8cc731911d416) Thanks [@dyc3](https://github.com/dyc3)! - Added the new nursery rule [`noEagerArrayMethodsInLoops`](https://biomejs.dev/linter/rules/no-eager-array-methods-in-loops/), which reports `.map()` and `.filter()` calls in the header of `for...of` loops. These calls build a new array that is only used by the loop.
+  
+  ```js
+  for (const name of users.map((user) => user.name)) {
+    console.log(name);
+  }
+  ```
+
+- [#12287](https://github.com/biomejs/biome/pull/12287) [`e12ad78`](https://github.com/biomejs/biome/commit/e12ad788e77a08748eb622a8f1fa852a1f3dc555) Thanks [@dyc3](https://github.com/dyc3)! - Added the new nursery rule [`noPlaywrightNthMethods`](https://biomejs.dev/linter/rules/no-playwright-nth-methods/), which disallows selecting Playwright elements by position with `first()`, `last()`, and `nth()`. A test that relies on the position of an element can act on a different element when the page changes.
+  
+  ```js
+  await page.locator("button").first().click();
+  ```
+
+- [#12289](https://github.com/biomejs/biome/pull/12289) [`bbbd95d`](https://github.com/biomejs/biome/commit/bbbd95d7711cb3a50ff4891464d1d231fb7fe1d5) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`noShortTimeValues`](https://biomejs.dev/linter/rules/no-short-time-values/), which reports CSS animation and transition times that are shorter than the configured `minimum` number of milliseconds. The rule does nothing until `minimum` is set.
+  
+  For example, the following code is invalid when `minimum` is `100`:
+  
+  ```css
+  a {
+    transition-duration: 80ms;
+  }
+  ```
+
+- [#12270](https://github.com/biomejs/biome/pull/12270) [`8ae35c4`](https://github.com/biomejs/biome/commit/8ae35c4ba70ba68b3f710a2d7be5059b5bf5e14a) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`noTanstackQueryRestDestructuring`](https://biomejs.dev/linter/rules/no-tanstack-query-rest-destructuring/), which disallows rest destructuring and object spread on TanStack Query results. Both read every property of the result, so the component updates on every change to the query.
+  
+  ```js
+  import { useQuery } from "@tanstack/react-query";
+  
+  const { data, ...rest } = useQuery({ queryKey: ["todos"], queryFn: fetchTodos });
+  ```
+  
+  The rule belongs to the new `tanstackQuery` domain.
+
+- [#12311](https://github.com/biomejs/biome/pull/12311) [`8434c92`](https://github.com/biomejs/biome/commit/8434c927b5bd99c3d66783dbc7a55963b4503e38) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`noUselessSplice`](https://biomejs.dev/linter/rules/no-useless-splice/), which reports `splice()` calls that have a simpler alternative. For example, `array.splice(0, 1)` can be written as `array.shift()`.
+
+- [#12286](https://github.com/biomejs/biome/pull/12286) [`50d2a4e`](https://github.com/biomejs/biome/commit/50d2a4e483e5bceeb9f1e5c5ce491ae5d59ae666) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`noZeroLengthUnit`](https://biomejs.dev/linter/rules/no-zero-length-unit/), which disallows units on zero lengths in CSS. Biome can remove the unit.
+  
+  ```css
+  a {
+    top: 0px;
+  }
+  ```
+
+- [#12224](https://github.com/biomejs/biome/pull/12224) [`fef7ed4`](https://github.com/biomejs/biome/commit/fef7ed417492fe45b261a0bc15c322e4a0a4706a) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useExpectToContain`](https://biomejs.dev/linter/rules/use-expect-to-contain/), which reports tests that compare the result of `includes()` to a boolean, and suggests using `toContain()` instead.
+  
+  ```js
+  expect(fruits.includes("apple")).toBe(true);
+  ```
+
+- [#12299](https://github.com/biomejs/biome/pull/12299) [`0d5025d`](https://github.com/biomejs/biome/commit/0d5025da59eb6d87655acc2a7a108200cdbd63fb) Thanks [@dyc3](https://github.com/dyc3)! - Added the new nursery rule [`useIteratorZip`](https://biomejs.dev/linter/rules/use-iterator-zip/), which reports `for` loops that use an index only to read the same position from several arrays. Such loops can use `Iterator.zip()` instead.
+  
+  ```js
+  // reported
+  for (let index = 0; index < Math.min(names.length, scores.length); index++) {
+    save(names[index], scores[index]);
+  }
+  ```
+
+- [#12298](https://github.com/biomejs/biome/pull/12298) [`a234d2f`](https://github.com/biomejs/biome/commit/a234d2fa3b0fcf848fd6e6b192471c666f9da492) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useMathAbs`](https://biomejs.dev/linter/rules/use-math-abs/), which reports manual absolute value calculations and range checks that can use `Math.abs()`. For example, `value < 0 ? -value : value` can be written as `Math.abs(value)`, and `value > limit || value < -limit` can be written as `Math.abs(value) > limit`.
+
+- [#12499](https://github.com/biomejs/biome/pull/12499) [`bd024cc`](https://github.com/biomejs/biome/commit/bd024cc1a5dd9b52ce387185040c397b77dbe6d3) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useMathTrunc`](https://biomejs.dev/linter/rules/use-math-trunc/), which requires `Math.trunc()` instead of bitwise operations or `parseInt(String(x), 10)` for removing the decimal part of a number. For example, `const result = value | 0;` and `const result = ~~value;` are now reported.
+
+- [#12387](https://github.com/biomejs/biome/pull/12387) [`64472e9`](https://github.com/biomejs/biome/commit/64472e92ba4533f7d62450ecca01fd1a8af0e00e) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useVueTypedRef`](https://biomejs.dev/linter/rules/use-vue-typed-ref/), which reports `ref()` and `shallowRef()` calls in TypeScript that have no type argument and no initial value other than `null` or `undefined`. Without a type, TypeScript can't tell which values these refs are meant to hold.
+  
+  ```ts
+  import { ref } from "vue";
+  
+  const count = ref();
+  ```
+
+- [#12216](https://github.com/biomejs/biome/pull/12216) [`f2a3c71`](https://github.com/biomejs/biome/commit/f2a3c71a20f3cc614257bbf7ed0c955aac8115da) Thanks [@dyc3](https://github.com/dyc3)! - Added the new nursery rule [`noDanglingUnderscore`](https://biomejs.dev/linter/rules/no-dangling-underscore/), which disallows variable names, function names, and property accesses that start or end with an underscore.
+  
+  ```js
+  const _count = 0; // reported
+  user._id; // reported
+  ```
+
+- [#12496](https://github.com/biomejs/biome/pull/12496) [`09d89b9`](https://github.com/biomejs/biome/commit/09d89b9c994f53f2a0436663bf0dbaef8b560db1) Thanks [@vidigoat](https://github.com/vidigoat)! - Fixed the formatter removing the parentheses around binary, logical, type-cast and instantiation operands of an instantiation expression. The type arguments then applied to the last operand only, and a nested instantiation expression didn't parse.
+  
+  ```diff
+  - const x = a + b<T>;
+  + const x = (a + b)<T>;
+  - const y = a as B<T>;
+  + const y = (a as B)<T>;
+  - const z = f<A><B>;
+  + const z = (f<A>)<B>;
+  ```
+
+- [#12113](https://github.com/biomejs/biome/pull/12113) [`ec4eb2d`](https://github.com/biomejs/biome/commit/ec4eb2d51d03799024d7e0dc3ce86f00095cc3bb) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useConsistentUnicodeBom`](https://biomejs.dev/linter/rules/use-consistent-unicode-bom/), which disallows a leading Unicode byte order mark by default and can require one with `bom: "always"`. The rule supports JavaScript, TypeScript, JSON, CSS, GraphQL, HTML, and Markdown, provides a fix, and preserves the `unicode-bom` option during ESLint migration.
+  
+  The following example is invalid by default because it starts with an invisible U+FEFF character:
+  
+  ```js
+  ﻿const value = 1;
+  ```
+
+- [#12248](https://github.com/biomejs/biome/pull/12248) [`afbc81e`](https://github.com/biomejs/biome/commit/afbc81ea78877d83413a642814c2f8ab7e344daa) Thanks [@dyc3](https://github.com/dyc3)! - Added the nursery rule [`useReactNativeValidPlatformColors`](https://biomejs.dev/linter/rules/use-react-native-valid-platform-colors/), which requires `PlatformColor()` and `DynamicColorIOS()` calls to use values written directly in the call, so React Native can optimize them.
+  
+  ```js
+  import { PlatformColor } from "react-native";
+  
+  const labelColor = "labelColor";
+  const color = PlatformColor(labelColor);
+  ```
+
 ## 2.6.2
 
 ### Minor Changes
